@@ -1,12 +1,14 @@
 # The suites need a real Windows host: the deploy suite drives a stand-in
 # nginx.cmd through `shell: true`, and the TLS suite looks for an OpenSSH/Git
 # `openssl.exe` to mint its certificate.
+#
+# Manual by default. Everything below runs locally with `node tools/selftest.mjs`
+# (52 checks), and this workflow is the same command on a Windows runner — start
+# it from the Actions tab with "Run workflow", or add the push/pull_request
+# triggers back once you have seen it pass on your account.
 name: selftest
 
 on:
-  push:
-    branches: [main]
-  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -18,11 +20,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Git for Windows ships the openssl the TLS suite needs
+      - name: Report whether openssl is available for the TLS suite
         shell: pwsh
         run: |
-          if (-not (Test-Path 'C:\Program Files\Git\usr\bin\openssl.exe')) {
-            Write-Host 'openssl not found; the TLS suite will report SKIP'
+          $openssl = 'C:\Program Files\Git\usr\bin\openssl.exe'
+          if (Test-Path $openssl) {
+            Write-Host "openssl found: $openssl"
+          } else {
+            Write-Host 'openssl not found; the TLS suite will report SKIP (it never claims a pass it did not earn)'
           }
       - name: Run every suite
         shell: pwsh

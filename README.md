@@ -255,6 +255,10 @@ node test\deploy-relay.test.mjs  # 13 项：plan 不改文件、apply 后 nginx 
 测试证书**（`test/fixtures/localhost-test-*.pem`，只为本地测试、保护不了任何东西，详见
 `test/fixtures/README.md`）。
 
+CI：`.github/workflows/selftest.yml` 会在 `windows-latest` 上跑同一条 `node tools/selftest.mjs`，
+**默认手动触发**（Actions 页面点 Run workflow）；想让它跟着 push/PR 跑，把 `push:`/`pull_request:`
+触发器加回去即可。
+
 **验收你自己线上的中继**（不用登录服务器）：
 
 ```powershell
