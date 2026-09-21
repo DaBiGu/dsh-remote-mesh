@@ -1,0 +1,13 @@
+# dsh-remote-workspaces bundle patch: inserts the dual-face plugin row into the web
+# profile roster. Applied as a profile bundle layer (the `dsh.bundle.patch`
+# manifest field) over dsh-base; activate with
+# `dsh plugin --profile web add link:<path-to-this-package>`.
+#
+# The row is a bare plugin by package name: the node half (exports ".") runs in
+# the host process (mesh transports, encrypted links, loopback tunnel proxy and
+# the /remote-workspaces RPC channel), and the `dsh.client` declaration in
+# package.json makes the browser half (exports "./client", served at
+# /plugins/<id>/client.js) load in the web GUI.
+- insert:
+    - id: remote-workspaces
+      name: 'dsh-remote-workspaces'

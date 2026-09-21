@@ -1,0 +1,6 @@
+# Keep the repository itself line-ending neutral: everything is stored with LF,
+# and Windows-only scripts get CRLF in a checkout so cmd.exe/PowerShell are happy.
+* text=auto eol=lf
+*.ps1 text eol=crlf
+*.cmd text eol=crlf
+*.bat text eol=crlf

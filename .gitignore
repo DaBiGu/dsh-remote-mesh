@@ -1,0 +1,27 @@
+# Runtime state — never commit this. It holds the node's private identity key and
+# the cluster key that every paired machine shares.
+config.json
+plugin.log
+relay-secret.txt
+relay.pid
+run-relay.cmd
+
+# Logs written next to the tools by activate.ps1 / install-autostart.ps1
+tools/activate.log
+tools/dsh-web-*.log
+tools/*.out.log
+tools/*.err.log
+
+# Backups that deploy-relay.mjs leaves next to an edited nginx.conf
+*.bak-*
+
+# Dependencies
+node_modules/
+
+# Editor and OS noise
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+Desktop.ini
+.DS_Store

@@ -1,0 +1,81 @@
+{
+  "name": "dsh-remote-workspaces",
+  "version": "1.0.0",
+  "description": "remote-workspaces: an end-to-end encrypted mesh that gives the DSH Web GUI a remote-workspaces section — other machines' workspaces and conversations, their full GUI proxied onto a local loopback port, and loopback port forwards for debugging remote pages.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "default": "./lib/client.js"
+    },
+    "./core/*": "./lib/core/*",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "engines": {
+      "dsh": ">=0.1.5-rc.1"
+    },
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-connection",
+        "@deepseek-ai/dsh-client-ui-sidebar",
+        "@deepseek-ai/dsh-client-ui-layout",
+        "@deepseek-ai/dsh-client-locale"
+      ],
+      "platform": "web"
+    }
+  },
+  "bin": {
+    "dsh-mesh-relay": "./bin/mesh-relay.mjs"
+  },
+  "files": [
+    "lib/**/*.js",
+    "bin/*.mjs",
+    "tools/*.mjs",
+    "tools/*.ps1",
+    "tools/*.example.json",
+    "test/**/*.mjs",
+    "test/**/*.cmd",
+    "test/**/*.conf",
+    "test/**/*.pem",
+    "test/fixtures/README.md",
+    "cordis.patch.yml",
+    "README.md",
+    "SECURITY.md",
+    "LICENSE",
+    "docs"
+  ],
+  "scripts": {
+    "test": "node tools/selftest.mjs"
+  },
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "plugin",
+    "remote",
+    "workspaces",
+    "mesh",
+    "e2ee",
+    "port-forward"
+  ],
+  "author": "DaBiGu",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DaBiGu/dsh-remote-workspaces.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DaBiGu/dsh-remote-workspaces/issues"
+  },
+  "homepage": "https://github.com/DaBiGu/dsh-remote-workspaces#readme",
+  "engines": {
+    "node": ">=18"
+  },
+  "private": false
+}

@@ -1,0 +1,21 @@
+{
+  "_comment": "Copy to a private file, then replace every placeholder. This file simulates one remote machine without installing a second Harness: `node tools/mesh-peer.mjs serve --config <your copy>`. Never commit a filled-in copy: clusterKey and launchToken are credentials.",
+  "id": "desktop-0000",
+  "name": "另一台电脑",
+  "hostname": "DESKTOP-EXAMPLE",
+  "clusterKey": "<copy from the other machine's $DSH_HOME/dsh-remote-workspaces/config.json>",
+  "relay": { "url": "", "secret": "" },
+  "listenHost": "127.0.0.1",
+  "listenPort": 39501,
+  "peers": [],
+  "webPort": 3098,
+  "launchToken": "<the other machine's dsh web launch token, for the GUI proxy>",
+  "snapshot": {
+    "workspaces": [
+      { "id": "ws-example", "title": "demo-site", "path": "G:\\work\\demo-site", "sessionIds": ["sess-example"] }
+    ],
+    "sessions": [
+      { "id": "sess-example", "title": "示例对话", "cwd": "G:\\work\\demo-site", "updatedAt": 0, "running": false }
+    ]
+  }
+}
