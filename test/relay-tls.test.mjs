@@ -174,7 +174,7 @@ async function waitRelayHealth(port, timeoutMs = 15000) {
         response.on('data', (chunk) => {
           body += chunk
         })
-        response.on('end', () => resolve(response.statusCode === 200 && body.includes('dsh-remote-workspaces-relay')))
+        response.on('end', () => resolve(response.statusCode === 200 && body.includes('dsh-remote-mesh-relay')))
       })
       probe.on('timeout', () => {
         probe.destroy()

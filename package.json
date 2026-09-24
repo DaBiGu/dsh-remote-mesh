@@ -1,5 +1,5 @@
 {
-  "name": "dsh-remote-workspaces",
+  "name": "dsh-remote-mesh",
   "version": "1.0.0",
   "description": "remote-workspaces: an end-to-end encrypted mesh that gives the DSH Web GUI a remote-workspaces section — other machines' workspaces and conversations, their full GUI proxied onto a local loopback port, and loopback port forwards for debugging remote pages.",
   "type": "module",
@@ -52,7 +52,8 @@
     "docs"
   ],
   "scripts": {
-    "test": "node tools/selftest.mjs"
+    "test": "node tools/selftest.mjs",
+    "prepublishOnly": "node tools/selftest.mjs"
   },
   "keywords": [
     "dsh",
@@ -68,14 +69,17 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DaBiGu/dsh-remote-workspaces.git"
+    "url": "git+https://github.com/DaBiGu/dsh-remote-mesh.git"
   },
   "bugs": {
-    "url": "https://github.com/DaBiGu/dsh-remote-workspaces/issues"
+    "url": "https://github.com/DaBiGu/dsh-remote-mesh/issues"
   },
-  "homepage": "https://github.com/DaBiGu/dsh-remote-workspaces#readme",
+  "homepage": "https://github.com/DaBiGu/dsh-remote-mesh#readme",
   "engines": {
     "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "private": false
 }

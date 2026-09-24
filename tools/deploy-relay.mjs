@@ -26,7 +26,7 @@
  * you run it and reports how many certificates the server actually sends. Use
  * it when browsers reach the site but the plugin cannot — a missing
  * intermediate only shows up for strict clients like Node.
- * @module dsh-remote-workspaces/tools/deploy-relay
+ * @module dsh-remote-mesh/tools/deploy-relay
  */
 import { spawn, spawnSync } from 'node:child_process'
 import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
@@ -286,7 +286,7 @@ function probe(url, insecure) {
         body += chunk
       })
       response.on('end', () => {
-        resolve({ ok: response.statusCode === 200 && body.includes('dsh-remote-workspaces-relay'), detail: `HTTP ${response.statusCode} ${body.slice(0, 160)}` })
+        resolve({ ok: response.statusCode === 200 && body.includes('dsh-remote-mesh-relay'), detail: `HTTP ${response.statusCode} ${body.slice(0, 160)}` })
       })
     })
     request.on('timeout', () => {

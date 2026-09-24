@@ -128,7 +128,7 @@ check('insertion is idempotent', () => {
   // Exactly one managed block, and exactly the two locations it is made of: the
   // relay prefix and its health probe, which lives under the same prefix so it
   // cannot shadow a `/healthz` the vhost already serves.
-  assert.equal((twice.text.match(/# >>> dsh-remote-workspaces/g) || []).length, 1)
+  assert.equal((twice.text.match(/# >>> dsh-remote-mesh/g) || []).length, 1)
   assert.equal((twice.text.match(/location[^\n]*__dsh-mesh\/relay/g) || []).length, 2)
 })
 
@@ -161,7 +161,7 @@ check('an already-present location is detected before editing', () => {
 })
 
 check('a half-written managed block is refused rather than mangled', () => {
-  const broken = `http {\n  server {\n    server_name a.b;\n    # >>> dsh-remote-workspaces (managed block, safe to delete) >>>\n  }\n}\n`
+  const broken = `http {\n  server {\n    server_name a.b;\n    # >>> dsh-remote-mesh (managed block, safe to delete) >>>\n  }\n}\n`
   const result = removeManagedBlock(broken)
   assert.equal(result.changed, false)
   assert.match(result.reason, /no closing marker|opening marker but no closing/)

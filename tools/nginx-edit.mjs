@@ -10,13 +10,13 @@
  * Nothing here runs nginx or touches the filesystem: `deploy-relay.mjs` owns
  * the orchestration (backup, `nginx -t`, reload, revert) and this module owns
  * only "what should the text become".
- * @module dsh-remote-workspaces/tools/nginx-edit
+ * @module dsh-remote-mesh/tools/nginx-edit
  */
 
 /** Opening marker of the managed region. */
-export const MARKER_OPEN = '# >>> dsh-remote-workspaces (managed block, safe to delete) >>>'
+export const MARKER_OPEN = '# >>> dsh-remote-mesh (managed block, safe to delete) >>>'
 /** Closing marker of the managed region. */
-export const MARKER_CLOSE = '# <<< dsh-remote-workspaces (managed block, safe to delete) <<<'
+export const MARKER_CLOSE = '# <<< dsh-remote-mesh (managed block, safe to delete) <<<'
 
 /**
  * Blank out comments and quoted strings so brace counting cannot be confused by

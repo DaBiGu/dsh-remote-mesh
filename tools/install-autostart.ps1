@@ -18,7 +18,7 @@ task does not need elevation.
 .EXAMPLE
 pwsh -File .\tools\install-autostart.ps1 -What dsh-web -Port 3080
 .EXAMPLE
-pwsh -File .\tools\install-autostart.ps1 -What mesh-relay -RelayDir C:\dsh-remote-workspaces
+pwsh -File .\tools\install-autostart.ps1 -What mesh-relay -RelayDir C:\dsh-remote-mesh
 .EXAMPLE
 pwsh -File .\tools\install-autostart.ps1 -What both -Remove
 .EXAMPLE
@@ -30,7 +30,7 @@ param(
   [int]$Port = 3080,
   [string]$Profile = 'web',
   [int]$RelayPort = 8787,
-  [string]$RelayDir = 'C:\dsh-remote-workspaces',
+  [string]$RelayDir = 'C:\dsh-remote-mesh',
   [string]$RelaySecret = '',
   [switch]$Remove,
   # With -Remove: also delete relay-secret.txt (kept by default, because every
@@ -78,7 +78,7 @@ function Install-DshWebTask {
 
 function Install-RelayTask {
   if (-not (Test-Path (Join-Path $RelayDir 'bin\mesh-relay.mjs'))) {
-    throw "$RelayDir\bin\mesh-relay.mjs not found; copy the dsh-remote-workspaces folder there first"
+    throw "$RelayDir\bin\mesh-relay.mjs not found; copy the dsh-remote-mesh folder there first"
   }
   $secret = $RelaySecret
   if (-not $secret) {

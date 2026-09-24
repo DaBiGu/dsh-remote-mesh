@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * dsh-remote-workspaces relay.
+ * dsh-remote-mesh relay.
  *
  * A blind virtual-circuit switch for the remote workspace mesh. Every node
  * holds one outbound WebSocket to this process and the relay pairs circuits
@@ -28,7 +28,7 @@
  *     proxy_send_timeout  3600s;
  *     proxy_buffering     off;
  *   }
- * @module dsh-remote-workspaces/bin/mesh-relay
+ * @module dsh-remote-mesh/bin/mesh-relay
  */
 import http from 'node:http'
 import { randomUUID } from 'node:crypto'
@@ -80,7 +80,7 @@ const circuits = new Map()
 const server = http.createServer((request, response) => {
   if (request.url === '/healthz' || request.url === '/') {
     response.writeHead(200, { 'content-type': 'application/json' })
-    response.end(JSON.stringify({ ok: true, service: 'dsh-remote-workspaces-relay', nodes: nodes.size, circuits: circuits.size }))
+    response.end(JSON.stringify({ ok: true, service: 'dsh-remote-mesh-relay', nodes: nodes.size, circuits: circuits.size }))
     return
   }
   response.writeHead(404, { 'content-type': 'text/plain' })
@@ -218,7 +218,7 @@ attachWebSocketServer(server, {
 })
 
 server.listen(port, host, () => {
-  log(`dsh-remote-workspaces relay listening on ws://${host}:${port}${path}`)
+  log(`dsh-remote-mesh relay listening on ws://${host}:${port}${path}`)
   log(`session ${randomUUID()}`)
   if (host === '127.0.0.1' || host === 'localhost') {
     log('bound to loopback: publish it through your reverse proxy with the WebSocket upgrade headers documented at the top of this file')

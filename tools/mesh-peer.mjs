@@ -19,7 +19,7 @@
  *
  * `launchToken` is answered only to an explicit `launch-token` request, matching
  * the real host, which keeps it out of the periodically exchanged snapshot.
- * @module dsh-remote-workspaces/tools/mesh-peer
+ * @module dsh-remote-mesh/tools/mesh-peer
  */
 import { readFileSync } from 'node:fs'
 import process from 'node:process'

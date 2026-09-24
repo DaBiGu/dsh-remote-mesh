@@ -3,7 +3,7 @@
   "id": "desktop-0000",
   "name": "另一台电脑",
   "hostname": "DESKTOP-EXAMPLE",
-  "clusterKey": "<copy from the other machine's $DSH_HOME/dsh-remote-workspaces/config.json>",
+  "clusterKey": "<copy from the other machine's $DSH_HOME/dsh-remote-mesh/config.json>",
   "relay": { "url": "", "secret": "" },
   "listenHost": "127.0.0.1",
   "listenPort": 39501,

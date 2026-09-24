@@ -35,7 +35,7 @@ pwsh -File .\tools\activate.ps1 -Verify -Port 3080
 param(
   [int]$Port = 3080,
   [string]$Profile = 'web',
-  [string]$PluginName = 'dsh-remote-workspaces',
+  [string]$PluginName = 'dsh-remote-mesh',
   [string]$Route = '/remote-workspaces',
   [int]$TimeoutSec = 120,
   [switch]$Verify,

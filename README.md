@@ -1,4 +1,4 @@
-# dsh-remote-workspaces
+# dsh-remote-mesh
 
 **English TL;DR** — A DeepSeek Harness (DSH) plugin that adds a `remote-workspaces` panel to the
 sidebar: another machine's workspaces, conversations and its whole web GUI, mapped onto
@@ -65,27 +65,43 @@ relay in the middle only ever sees ciphertext. Zero npm dependencies. Chinese RE
 
 要求：**DSH**（Harness）已装好、Node.js 18+。
 
-1. 把本仓库放到一个固定位置，例如 `D:\scripts\dsh-remote-workspaces`。
-2. 装进 DSH 的 profile：
+> **名字说明**：npm 包名与仓库名是 `dsh-remote-mesh`（`dsh-remote-workspaces` 这个 npm 名字已被
+> 另一款同类插件占用），而它在侧边栏里的面板叫 `remote-workspaces`——那是功能名。
 
-   ```powershell
-   dsh plugin --profile web add "link:D:\scripts\dsh-remote-workspaces"
-   ```
+### 方式一：npm（推荐，一条命令）
 
-3. 重启 `dsh web`。插件是 host 侧加载的，**必须重启进程**：
+```powershell
+dsh plugin --profile web add dsh-remote-mesh
+```
 
-   ```powershell
-   # 推荐用自带脚本：重启 → 验证插件真的加载了 → 没加载就自动摘掉插件重启（退出码 3）
-   powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\activate.ps1
-   # 只想看当前进程加载了没有（不动任何东西）：
-   powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\activate.ps1 -Verify -Port 3080
-   ```
+零依赖、**没有任何 install/prepare 脚本**（`--ignore-scripts` 也能装），装完重启即可。
 
-   > 从**普通终端**跑，别从 Harness GUI 里跑——重启会连同 GUI 所在的进程树一起结束。
+### 方式二：从源码（想改代码或跟踪某个 commit 时）
 
-4. 打开 GUI，左侧应该出现 `remote-workspaces`。
+```powershell
+git clone https://github.com/DaBiGu/dsh-remote-mesh.git D:\scripts\dsh-remote-mesh
+dsh plugin --profile web add "link:D:\scripts\dsh-remote-mesh"
+```
 
-首次启动会在 `$DSH_HOME\dsh-remote-workspaces\config.json` 自动生成节点身份、集群密钥与直连监听端口。
+> pnpm 10 默认会拦下 git 来源依赖的 build 步骤（DSH 会在报错里让你把对应的键加进
+> profile 的 `pnpm-workspace.yaml` 的 `allowBuilds`）。用 npm 装没有这个问题。
+
+### 装完都要重启 `dsh web`
+
+插件是 host 侧加载的，**必须重启进程**：
+
+```powershell
+# 推荐用自带脚本：重启 → 验证插件真的加载了 → 没加载就自动摘掉插件重启（退出码 3）
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\activate.ps1
+# 只想看当前进程加载了没有（不动任何东西）：
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\activate.ps1 -Verify -Port 3080
+```
+
+> 从**普通终端**跑，别从 Harness GUI 里跑——重启会连同 GUI 所在的进程树一起结束。
+
+重启后打开 GUI，左侧应该出现 `remote-workspaces`。
+
+首次启动会在 `$DSH_HOME\dsh-remote-mesh\config.json` 自动生成节点身份、集群密钥与直连监听端口。
 
 ---
 
@@ -113,18 +129,18 @@ relay in the middle only ever sees ciphertext. Zero npm dependencies. Chinese RE
 ### 服务器侧（Windows + nginx）
 
 1. 服务器装 Node.js（18+ 即可，中继零依赖）。
-2. 把本仓库拷到服务器，例如 `C:\dsh-remote-workspaces`。
+2. 把本仓库拷到服务器，例如 `C:\dsh-remote-mesh`。
 3. **先看它打算怎么改，再让它改**（不改任何东西，只打印 diff）：
 
    ```powershell
-   node C:\dsh-remote-workspaces\tools\deploy-relay.mjs plan --domain mesh.example.com
+   node C:\dsh-remote-mesh\tools\deploy-relay.mjs plan --domain mesh.example.com
    ```
 
 4. 满意了就执行。它会：备份 nginx.conf → 在**你指定域名那个 TLS `server` 块**里插入一段带标记的
    `location` → 跑 `nginx -t` → **测试通过才 reload** → 启动中继 → 探测公网健康地址：
 
    ```powershell
-   node C:\dsh-remote-workspaces\tools\deploy-relay.mjs apply --domain mesh.example.com
+   node C:\dsh-remote-mesh\tools\deploy-relay.mjs apply --domain mesh.example.com
    ```
 
    安全边界：只动那个 vhost 里的一段带标记区域，**其它 vhost 一个字节都不碰**；加的东西全部落在
@@ -195,7 +211,7 @@ node tools\deploy-relay.mjs chain --domain mesh.example.com
 ## 七、安全模型
 
 **密钥**：每台机器一枚 X25519 身份密钥对 + 一个所有机器共享的 32 字节集群密钥（配对码携带）。
-两者都存在 `$DSH_HOME\dsh-remote-workspaces\config.json`。
+两者都存在 `$DSH_HOME\dsh-remote-mesh\config.json`。
 
 **握手**（每次建链跑一次，三条消息）：会话密钥由四段 ECDH 与集群密钥一起派生——
 `ee`（临时×临时，前向保密）、`ss`（静态×静态，身份认证）、`es`/`se`（临时×静态，抗密钥泄露伪装），
@@ -209,7 +225,7 @@ node tools\deploy-relay.mjs chain --domain mesh.example.com
 睡一觉回来"时半死连接一直显示已连接；发不出去的帧会**立刻**报错并把链路判死重连，不静默挂 15 秒。
 
 **本机侧**：浏览器的 `remote-workspaces` 请求走一条 loopback 保护的自注册路由，校验来源 socket、
-`Host`、`Origin`，并要求一个**每进程随机 boot token**（由 index 注入 `__DSH_REMOTE_WORKSPACES__`）；
+`Host`、`Origin`，并要求一个**每进程随机 boot token**（由 index 注入 `__DSH_REMOTE_MESH__`）；
 隧道目标只允许 `#api` 或回环地址（SSRF 白名单），peer 无法让本机去连任意主机。
 
 **已知取舍**：中继目前是单点，没有多中继/自动选路。
@@ -226,7 +242,7 @@ node tools\deploy-relay.mjs chain --domain mesh.example.com
 **从上往下第一个 ✘ 就是断在哪一段。** 例：中继、链路、远端 API 全 ✔，但「远端 dsh web 端口」✘
 → 对面那台的 `dsh web` 没在跑；链路就 ✘ → 那台机器离线或密钥不对。
 
-日志：`$DSH_HOME\dsh-remote-workspaces\plugin.log`（Harness 自己的 logger 可能被级别过滤，
+日志：`$DSH_HOME\dsh-remote-mesh\plugin.log`（Harness 自己的 logger 可能被级别过滤，
 所以插件也落盘一份）。
 
 ---
@@ -280,7 +296,7 @@ node tools\e2e-two-node.mjs --a-port 3098 --a-token <A> --b-port 3097 --b-token 
 ## 十、目录结构
 
 ```
-dsh-remote-workspaces/
+dsh-remote-mesh/
   package.json            dsh.bundle.patch + dsh.client 声明（零 dependencies）
   cordis.patch.yml        把插件行插进 web profile
   lib/index.js            host 半区：配置、Mesh、隧道、GUI 代理、端口转发、/remote-workspaces 路由
@@ -321,7 +337,7 @@ dsh-remote-workspaces/
 - **中继是单点**，没做多中继/自动选路。
 - **不做文件镜像**：设计上是实时直连（不做本地镜像，所以不会漂移）；要离线镜像应该另做一个
   同步层，而不是塞进隧道里。
-- **握手标签里带插件名**（`dsh-remote-workspaces/link/v1` 等），所以**两端必须跑同一个版本**：
+- **握手标签里带插件名**（`dsh-remote-mesh/link/v1` 等），所以**两端必须跑同一个版本**：
   旧版本节点不认新帧，隧道会等到超时。
 - **平台**：插件本体与 CLI 工具平台无关；`tools\*.ps1` 与 nginx 部署路径按 Windows 写、也只在
   Windows 上实测过，Linux/macOS 欢迎 PR。

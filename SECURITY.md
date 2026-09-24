@@ -4,7 +4,7 @@
 
 Please **do not** open a public issue for a security problem. Use GitHub's private
 reporting instead: **Security → Report a vulnerability** on this repository
-(`https://github.com/DaBiGu/dsh-remote-workspaces/security/advisories/new`), or
+(`https://github.com/DaBiGu/dsh-remote-mesh/security/advisories/new`), or
 reach the maintainer through the contact details on their GitHub profile.
 
 Useful details to include: what you expected, what happened, the exact version
@@ -34,7 +34,7 @@ window before publishing details.
 ## What it does not protect
 
 - **A compromised machine.** Anyone who can read
-  `$DSH_HOME\dsh-remote-workspaces\config.json` has that node's identity key and
+  `$DSH_HOME\dsh-remote-mesh\config.json` has that node's identity key and
   the cluster key, and can impersonate any machine in the mesh. Treat that file
   like an SSH private key.
 - **A leaked pairing code.** The code carries the cluster key, so anyone who has

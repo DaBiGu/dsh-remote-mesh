@@ -7,7 +7,7 @@
  * pair them, then exercised through the paths the panel uses.
  *
  * It needs both instances running, and their per-process boot tokens (read them
- * from a browser console as `__DSH_REMOTE_WORKSPACES__.token`, or from
+ * from a browser console as `__DSH_REMOTE_MESH__.token`, or from
  * `tools/activate.ps1 -Verify` output — the token is what the fallback carrier
  * requires).
  *
@@ -20,7 +20,7 @@
  *   3. Both sides must list the other as an online peer with its inventory.
  *   4. A opens B's GUI through the mesh and fetches it over HTTP.
  *   5. A sends B's agent a prompt and B must answer in its own session log.
- * @module dsh-remote-workspaces/tools/e2e-two-node
+ * @module dsh-remote-mesh/tools/e2e-two-node
  */
 import net from 'node:net'
 import process from 'node:process'
@@ -76,7 +76,7 @@ function check(name, assertion) {
 async function call(node, method, payload = {}) {
   const response = await fetch(`http://127.0.0.1:${node.port}/remote-workspaces/${method}`, {
     method: 'POST',
-    headers: { 'content-type': 'application/json', 'x-dsh-remote-workspaces-token': node.token },
+    headers: { 'content-type': 'application/json', 'x-dsh-remote-mesh-token': node.token },
     body: JSON.stringify({ type: 'client-request', rpcId: `${Date.now()}`, method, payload }),
   })
   const envelope = await response.json()

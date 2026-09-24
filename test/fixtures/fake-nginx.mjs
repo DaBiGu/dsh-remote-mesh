@@ -37,7 +37,7 @@ async function countBraces(text) {
 }
 
 if (argv.includes('-V')) {
-  process.stderr.write('nginx version: nginx/1.24.0 (dsh-remote-workspaces test stand-in)\n')
+  process.stderr.write('nginx version: nginx/1.24.0 (dsh-remote-mesh test stand-in)\n')
   process.stderr.write(`built by fake\nconfigure arguments: --conf-path=conf/nginx.conf --prefix=${here}\n`)
   process.exit(0)
 }

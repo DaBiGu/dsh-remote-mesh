@@ -7,7 +7,7 @@
  * decompressor consumes every concatenated frame.
  *
  * Usage: node tools/read-session.mjs <session-id-or-path> [--grep <text>]
- * @module dsh-remote-workspaces/tools/read-session
+ * @module dsh-remote-mesh/tools/read-session
  */
 import { readFileSync, readdirSync, statSync } from 'node:fs'
 import path from 'node:path'

@@ -435,7 +435,7 @@ await check('the relay carries a working tunnel', async () => {
 })
 
 await check('the relay only ever sees ciphertext', async () => {
-  const canary = 'PLAINTEXT-CANARY-dsh-remote-workspaces'
+  const canary = 'PLAINTEXT-CANARY-dsh-remote-mesh'
   const answer = await carol.call('dave', 'echo', { canary })
   assert.equal(answer.op, 'echo')
   assert.ok(relayedPayloads.length > 0, 'the relay forwarded no payloads at all')

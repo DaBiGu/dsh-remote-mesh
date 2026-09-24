@@ -6,7 +6,7 @@
  *
  * Suites run sequentially because the mesh suite binds real loopback ports.
  * Nothing here needs a second machine, a public server, or a real nginx.
- * @module dsh-remote-workspaces/tools/selftest
+ * @module dsh-remote-mesh/tools/selftest
  */
 import { spawnSync } from 'node:child_process'
 import path from 'node:path'

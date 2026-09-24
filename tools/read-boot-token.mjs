@@ -9,17 +9,17 @@
  *
  * The token is injected into the served index HTML, so two plain requests are
  * enough: the launch URL exchanges `?token=…` for a cookie, and the page that
- * comes back carries `globalThis["__DSH_REMOTE_WORKSPACES__"]`.
+ * comes back carries `globalThis["__DSH_REMOTE_MESH__"]`.
  *
  * Usage:
  *   node tools/read-boot-token.mjs --port 3080 --launch-token <t>
  *   node tools/read-boot-token.mjs --url 'http://127.0.0.1:3080/?token=<t>'
- * @module dsh-remote-workspaces/tools/read-boot-token
+ * @module dsh-remote-mesh/tools/read-boot-token
  */
 import http from 'node:http'
 import process from 'node:process'
 
-const GLOBAL_NAME = '__DSH_REMOTE_WORKSPACES__'
+const GLOBAL_NAME = '__DSH_REMOTE_MESH__'
 
 /**
  * @param {string[]} argv - Arguments after the script name.

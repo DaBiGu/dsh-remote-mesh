@@ -104,7 +104,7 @@ async function flakyHealth(failures) {
         return
       }
       response.writeHead(200, { 'content-type': 'application/json' })
-      response.end('{"ok":true,"service":"dsh-remote-workspaces-relay"}')
+      response.end('{"ok":true,"service":"dsh-remote-mesh-relay"}')
     },
   )
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve))
@@ -195,7 +195,7 @@ try {
     assert.match(applied.output, /relay started|already listening/)
     assert.equal(applied.status, 3, applied.output)
     const text = readFileSync(install.conf, 'utf8')
-    assert.match(text, />>> dsh-remote-workspaces/)
+    assert.match(text, />>> dsh-remote-mesh/)
     assert.match(text, /location \/__dsh-mesh\/relay/)
     assert.match(text, new RegExp(`proxy_pass\\s+http://127\\.0\\.0\\.1:${RELAY_PORT}/`))
   })
@@ -215,7 +215,7 @@ try {
   const second = deploy(['apply', ...base])
   await check('a second apply is a no-op, not a duplicate block', () => {
     // One managed block, holding the relay location and its health probe.
-    assert.equal((readFileSync(install.conf, 'utf8').match(/# >>> dsh-remote-workspaces/g) || []).length, 1)
+    assert.equal((readFileSync(install.conf, 'utf8').match(/# >>> dsh-remote-mesh/g) || []).length, 1)
     assert.equal(second.status, 3, second.output)
   })
 
