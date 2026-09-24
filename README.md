@@ -75,6 +75,7 @@ dsh plugin --profile web add dsh-remote-mesh
 ```
 
 零依赖、**没有任何 install/prepare 脚本**（`--ignore-scripts` 也能装），装完重启即可。
+（如果 npm 上还查不到这个包，说明首次发布还没做——先用方式二。）
 
 ### 方式二：从源码（想改代码或跟踪某个 commit 时）
 
