@@ -16,6 +16,8 @@ import { fileURLToPath } from 'node:url'
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
 const SUITES = [
+  ['i18n', 'Bilingual copy: key coverage, placeholder alignment, locale wiring', 'test/i18n.test.mjs'],
+  ['usage', 'Usage ledger reading: today, totals, zero-filled week, balance, cache', 'test/usage.test.mjs'],
   ['crypto', 'Handshake, cluster authentication, AEAD framing', 'test/crypto.test.mjs'],
   ['mesh', 'Live sockets, tunnels, concurrency, relay, SSRF guard, crash guard', 'test/mesh.test.mjs'],
   ['tls', 'wss:// behind a TLS terminator: trust, refusal, relay restart recovery', 'test/relay-tls.test.mjs'],

@@ -44,6 +44,13 @@ window before publishing details.
   boundary — there is no finer-grained per-peer permission model yet.
 - **Metadata.** The relay (and anyone watching that server's traffic) can see
   node ids, circuit ids, frame sizes and timing.
+- **Spend and balance figures.** Every snapshot carries this machine's own usage
+  summary (today's and lifetime cost, token counts, and the provider balance) so a
+  paired peer's panel can render it. A paired peer therefore learns what you spend.
+  That sits inside the existing trust boundary — a paired peer can already read your
+  workspaces and conversations — but unlike those it is money, so do not pair a
+  machine you would not show your bill to. The plugin only reads the
+  `@linxin666/dsh-usage` ledger; it never writes to it.
 - **The DSH instance itself.** This plugin extends the Harness; it does not add
   authorization on top of it. Whoever can reach your `dsh web` can do whatever
   that instance allows.

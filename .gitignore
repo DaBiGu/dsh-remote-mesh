@@ -12,8 +12,10 @@ tools/dsh-web-*.log
 tools/*.out.log
 tools/*.err.log
 
-# Backups that deploy-relay.mjs leaves next to an edited nginx.conf
+# Backups that deploy-relay.mjs leaves next to an edited nginx.conf, and the
+# hand-made "before-*" copies kept while reworking a bundle
 *.bak-*
+*.before-*
 
 # Dependencies
 node_modules/
