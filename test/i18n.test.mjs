@@ -110,10 +110,11 @@ function collectKeys(source) {
 const EN_WITH_BODY = (() => {
   const start = SOURCE.indexOf('const EN = {')
   assert.notEqual(start, -1, 'the bundle must carry an EN dictionary')
-  const end = SOURCE.indexOf('\n    }\n\n    /** Chinese copy', start)
+  const limit = SOURCE.indexOf('const ZH_COPY = {', start)
+  assert.notEqual(limit, -1, 'the ZH overrides must follow the EN dictionary')
+  const end = SOURCE.lastIndexOf('\n    }', limit)
   assert.notEqual(end, -1, 'the EN dictionary must be a standalone literal')
-  const literal = SOURCE.slice(start + 'const EN = '.length, end + '\n    }'.length)
-  return literal
+  return SOURCE.slice(start + 'const EN = '.length, end + '\n    }'.length)
 })()
 
 const EN = (0, eval)(`(${EN_WITH_BODY})`)
@@ -130,10 +131,15 @@ check('English copy contains no leftover Chinese sentences', () => {
   assert.deepEqual(leaks, [], 'these translations are still Chinese')
 })
 
-check('Chinese copy is the key set itself', () => {
-  const zh = Object.fromEntries(Object.keys(EN).map((key) => [key, key]))
-  assert.equal(Object.keys(zh).length, Object.keys(EN).length)
-  assert.ok(Object.values(zh).every((value, index) => value === Object.keys(EN)[index]))
+check('Chinese copy keeps the source sentences and fixes the English keys', () => {
+  const zhCopy = Object.fromEntries(Object.keys(EN).map((key) => [key, key]))
+  assert.equal(zhCopy['remote-workspaces'], 'remote-workspaces')
+  const han = /[\u4e00-\u9fff]/
+  const stragglers = Object.keys(EN).filter((key) => !han.test(key))
+  assert.deepEqual(stragglers.sort(), [
+    'remote-workspaces',
+    'remote-workspaces: %s',
+  ], 'a new English-only key needs a Chinese override next to ZH_COPY')
 })
 
 check('every looked-up key has a translation', () => {
@@ -177,7 +183,7 @@ check('the sidebar labels are translated, not hard-coded', () => {
 })
 
 check('a shell without a locale service still renders Chinese', () => {
-  assert.match(SOURCE, /let translate = \(key\) => key/)
+  assert.match(SOURCE, /let translate = \(key\) => ZH\[key\] \?\? key/)
 })
 
 // ---------------------------------------------------------------------------
@@ -275,14 +281,14 @@ await asyncCheck('apply() hands both dictionaries to the shell service', async (
   const { dictionaries } = await mount()
   const dicts = dictionaries.get('remote-mesh')
   assert.ok(dicts, 'the namespace must be registered')
-  assert.equal(dicts.zh['remote-workspaces'], 'remote-workspaces')
+  assert.equal(dicts.zh['remote-workspaces'], '远程工作区')
   assert.equal(dicts.en['remote-workspaces'], 'Remote workspaces')
   assert.equal(Object.keys(dicts.en).length, Object.keys(dicts.zh).length)
 })
 
 await asyncCheck('a Chinese shell renders Chinese labels', async () => {
   const { labels } = await mount({ language: 'zh' })
-  assert.deepEqual(labels(), ['remote-workspaces'])
+  assert.deepEqual(labels(), ['远程工作区'])
 })
 
 await asyncCheck('an English shell renders English labels', async () => {
@@ -298,7 +304,7 @@ await asyncCheck('per-machine rows translate the prefix and keep the machine nam
 
 await asyncCheck('a shell without a locale service falls back to Chinese', async () => {
   const { labels } = await mount({ locale: false })
-  assert.deepEqual(labels(), ['remote-workspaces'])
+  assert.deepEqual(labels(), ['远程工作区'])
 })
 
 process.stdout.write(`\n${passed} checks passed\n`)

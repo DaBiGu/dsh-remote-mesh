@@ -1,6 +1,6 @@
 {
   "name": "dsh-remote-mesh",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "remote-workspaces: an end-to-end encrypted mesh that gives the DSH Web GUI a remote-workspaces section — other machines' workspaces and conversations, their full GUI proxied onto a local loopback port, and loopback port forwards for debugging remote pages.",
   "type": "module",
   "main": "lib/index.js",
