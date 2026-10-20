@@ -70,7 +70,25 @@ relay in the middle only ever sees ciphertext. Zero npm dependencies. Chinese RE
 > **名字说明**：npm 包名与仓库名是 `dsh-remote-mesh`（`dsh-remote-workspaces` 这个 npm 名字已被
 > 另一款同类插件占用），而它在侧边栏里的面板叫 `remote-workspaces`——那是功能名。
 
-### 方式一：npm（推荐，一条命令）
+### 方式零：DSH Desktop（桌面版）
+
+桌面版的 profile 由 Electron 独占管理，直接跑 `dsh plugin` 会被拒绝
+（`profile "desktop" is managed exclusively by the Electron application`）。
+改用 Electron 自带的 CLI（下面按默认安装路径 `D:\DeepSeek Harness` 写，自己改）：
+
+```powershell
+$env:ELECTRON_RUN_AS_NODE = '1'
+& "D:\DeepSeek Harness\DeepSeek Harness.exe" --expose-internals `
+  "D:\DeepSeek Harness\resources\app.asar\dsh\node_modules\@deepseek-ai\dsh-desktop-host\lib\cli.js" `
+  plugin --profile desktop add dsh-remote-mesh
+```
+
+装完**重启 DSH Desktop**：桌面端没有插件热重载，宿主代码只在启动时加载。
+
+> 报 `ERR_PNPM_FETCH_404` 通常是镜像/CDN 还没同步到该版本：先设
+> `$env:npm_config_registry='https://registry.npmjs.org/'` 再装一次。
+
+### 方式一：npm（推荐，web 版一条命令）
 
 ```powershell
 dsh plugin --profile web add dsh-remote-mesh
@@ -89,9 +107,9 @@ dsh plugin --profile web add "link:D:\scripts\dsh-remote-mesh"
 > pnpm 10 默认会拦下 git 来源依赖的 build 步骤（DSH 会在报错里让你把对应的键加进
 > profile 的 `pnpm-workspace.yaml` 的 `allowBuilds`）。用 npm 装没有这个问题。
 
-### 装完都要重启 `dsh web`
+### 装完都要重启进程
 
-插件是 host 侧加载的，**必须重启进程**：
+插件是 host 侧加载的，**必须重启**：桌面版重启整个 App；web 版重启 `dsh web`——
 
 ```powershell
 # 推荐用自带脚本：重启 → 验证插件真的加载了 → 没加载就自动摘掉插件重启（退出码 3）
@@ -102,7 +120,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\activate.ps1 -Verify
 
 > 从**普通终端**跑，别从 Harness GUI 里跑——重启会连同 GUI 所在的进程树一起结束。
 
-重启后打开 GUI，左侧应该出现 `remote-workspaces`。
+重启后打开 GUI，左侧应该出现「远程工作区 / Remote workspaces」。
 
 首次启动会在 `$DSH_HOME\dsh-remote-mesh\config.json` 自动生成节点身份、集群密钥与直连监听端口。
 
